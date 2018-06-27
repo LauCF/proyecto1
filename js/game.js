@@ -14,12 +14,6 @@ Game.prototype.start = function() {
 
     if (this.framesCounter > 1000) {
       this.framesCounter = 0;
-    }function Game(canvadId) {
-      this.canvas = document.getElementById(canvadId);
-      this.ctx = this.canvas.getContext("2d");
-      this.fps = 60;
-    
-      this.reset();
     }
 
     if (this.framesCounter % 50 === 0) {
@@ -29,12 +23,12 @@ Game.prototype.start = function() {
     this.draw();
     this.moveAll();
 
-    this.clearObstacles();
-
-    this.generateObstacle();
+    console.log(this.isCollision());
 
     if (this.isCollision()) {
-      this.score += 1;
+      this.score++;
+      console.log(this.score)
+      this.clearObstacles();
     }
     
     }.bind(this), 1000 / this.fps);
@@ -46,7 +40,7 @@ Game.prototype.stop = function() {
 
 Game.prototype.gameOver = function() {
   this.stop();
-  if(confirm("GAME OVER. Play again?")) {
+  if(confirm("GAME OVER. PLAY AGAIN?")) {
     this.reset();
     this.start();
   }
@@ -62,23 +56,23 @@ Game.prototype.reset = function() {
 
 Game.prototype.isCollision = function() {
   return this.obstacles.some(function(obstacle) {
-    return ((this.player.x + this.player.w) >= this.obstacle.x) &&
-    this.player.x <= (this.obstacle.x + this.obstacle.w) &&
-    this.player.y <= (this.obstacle.y + this.obstacle.h) &&
-    (this.player.y + this.player.h) >= this.obstacle.y
+    return ((this.player.x + this.player.w) >= obstacle.x) &&
+    this.player.x <= (obstacle.x + obstacle.w) &&
+    this.player.y <= (obstacle.y + obstacle.h) &&
+    (this.player.y + this.player.h) >= obstacle.y
   }.bind(this));
 };
-/*
-Game.prototype.clearEatenObstacles = function() {
-  if (this.obstacle.isCollision()) {
-    delete obstacle.this.img.src
-  }
-};
-*/
+
 Game.prototype.clearObstacles = function() {
   this.obstacles = this.obstacles.filter(function(obstacle) {
-    return obstacle.x >= 0;
-  });
+    if (((this.player.x + this.player.w) >= obstacle.x) &&
+    this.player.x <= (obstacle.x + obstacle.w) &&
+    this.player.y <= (obstacle.y + obstacle.h) &&
+    (this.player.y + this.player.h) >= obstacle.y) {
+      return false;
+    }
+    return obstacle.y <= this.canvas.height;
+  }.bind(this));
 };
 
 Game.prototype.generateObstacle = function() {
@@ -97,6 +91,10 @@ Game.prototype.draw = function() {
   this.ctx.font = "25px sans-serif";
   this.ctx.fillStyle = "red";
   this.ctx.fillText(("Score " + this.score), 50, 50);
+
+  this.ctx.font = "25px sans-serif";
+  this.ctx.fillStyle = "yellow";
+  this.ctx.fillText(("Lives "), 850, 50);
 };
 
 Game.prototype.moveAll = function() {

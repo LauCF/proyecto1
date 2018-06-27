@@ -24,12 +24,15 @@ this.game.ctx.drawImage(this.img, this.x, this.y, this.w, this.h);
 Player.prototype.setListeners = function() {
   document.onkeydown = function(event) {
     if (event.keyCode === LEFT_KEY) {
+      if (this.x >= 0) {
       this.x -= 15;
+      }
     } else if (event.keyCode === RIGHT_KEY) {
+      if (this.x + this.w <= this.game.canvas.width) {
       this.x += 15;
+      }
     } else if (event.keyCode === SPACE && this.y == this.y0) {
       this.y -= 150;   
-      // this.vy -= 20;
     }
   }.bind(this);
 };
