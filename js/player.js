@@ -6,7 +6,7 @@ function Player(game) {
   this.img.frameIndex = 0;  
   
   this.x = this.game.canvas.width * 0.48;
-  this.y0 = this.game.canvas.height * 0.8;
+  this.y0 = this.game.canvas.height * 0.79;
   this.y = this.y0;
 
   this.w = 50;
@@ -32,13 +32,26 @@ Player.prototype.setListeners = function() {
       this.x += 15;
       }
     } else if (event.keyCode === SPACE && this.y == this.y0) {
-      this.y -= 150;   
+      this.y -= 5;
+      this.vy -= 10;  
     }
   }.bind(this);
 };
 
 Player.prototype.move = function() {
   var gravity = 0.5;
+  if (this.y >= this.y0) {
+    this.vy = 1;
+    this.y = this.y0;
+  } else {
+    this.vy += gravity;
+    this.y += this.vy;
+  }
+};
+
+Player.prototype.move = function() {
+  var gravity = 0.4;
+
   if (this.y >= this.y0) {
     this.vy = 1;
     this.y = this.y0;

@@ -16,10 +16,12 @@ Game.prototype.start = function() {
       this.framesCounter = 0;
     }
 
-    if (this.framesCounter % 50 === 0) {
-      this.generateObstacle();
+    if (this.framesCounter % 150 === 0) {
+      this.generateObstacle("cerebro");
+    } else if(this.framesCounter % 200 === 0) {
+      this.generateObstacle("cake")
     }
-
+    this.gameOver();
     this.draw();
     this.moveAll();
 
@@ -27,7 +29,9 @@ Game.prototype.start = function() {
 
     if (this.isCollision()) {
       this.score++;
+      this.lives--;
       console.log(this.score)
+      console.log(this.lives)
       this.clearObstacles();
     }
     
@@ -39,10 +43,12 @@ Game.prototype.stop = function() {
 };
 
 Game.prototype.gameOver = function() {
-  this.stop();
+  if(this.lives == 0) {
+    this.stop();
   if(confirm("GAME OVER. PLAY AGAIN?")) {
     this.reset();
     this.start();
+  }
   }
 };
 
@@ -52,6 +58,7 @@ Game.prototype.reset = function() {
   this.obstacles = [];
   this.framesCounter = 0;
   this.score = 0;
+  this.lives = 3;
 };
 
 Game.prototype.isCollision = function() {
@@ -75,8 +82,8 @@ Game.prototype.clearObstacles = function() {
   }.bind(this));
 };
 
-Game.prototype.generateObstacle = function() {
-  this.obstacles.push(new Obstacle(this));
+Game.prototype.generateObstacle = function(typeOfObstacle) {
+  this.obstacles.push(new Obstacle(this, typeOfObstacle));
 };
 
 Game.prototype.clear = function() {
@@ -94,10 +101,16 @@ Game.prototype.draw = function() {
 
   this.ctx.font = "25px sans-serif";
   this.ctx.fillStyle = "yellow";
-  this.ctx.fillText(("Lives "), 850, 50);
+  this.ctx.fillText(("Lives " + this.lives), 875, 50);
 };
 
 Game.prototype.moveAll = function() {
   this.player.move();
-  this.obstacles.forEach(function(obstacle) { obstacle.move(); });
+  this.obstacles.forEach(function(obstacle) { 
+    if (obstacle.typeOfObstacle === "cerebro") {
+    obstacle.moveY(); 
+  } else {
+    obstacle.moveX();
+  }
+  });
 };
