@@ -20,6 +20,8 @@ Game.prototype.start = function() {
       this.generateObstacle("cerebro");
     } else if(this.framesCounter % 200 === 0) {
       this.generateObstacle("cake")
+    } else if(this.framesCounter % 50 === 0){
+      this.score++;
     }
     this.gameOver();
     this.draw();
@@ -28,22 +30,21 @@ Game.prototype.start = function() {
     console.log(this.isCollision());
 
     if (this.isCollision()) {
-      this.score++;
       this.lives--;
+      }
       console.log(this.score)
       console.log(this.lives)
       this.clearObstacles();
-    }
-    
-    }.bind(this), 1000 / this.fps);
-};
+
+      }.bind(this), 1000 / this.fps);
+      };
 
 Game.prototype.stop = function() {
   clearInterval(this.interval);
 };
 
 Game.prototype.gameOver = function() {
-  if(this.lives == 0) {
+  if(this.lives === 0) {
     this.stop();
   if(confirm("GAME OVER. PLAY AGAIN?")) {
     this.reset();
@@ -95,13 +96,13 @@ Game.prototype.draw = function() {
   this.player.draw();
   this.obstacles.forEach(function(obstacle) { obstacle.draw(); });
 
-  this.ctx.font = "25px sans-serif";
-  this.ctx.fillStyle = "red";
+  this.ctx.font = "28px sans-serif";
+  this.ctx.fillStyle = "red ";
   this.ctx.fillText(("Score " + this.score), 50, 50);
 
-  this.ctx.font = "25px sans-serif";
+  this.ctx.font = "28px sans-serif";
   this.ctx.fillStyle = "yellow";
-  this.ctx.fillText(("Lives " + this.lives), 875, 50);
+  this.ctx.fillText(("Lives " + this.lives), 175, 50);
 };
 
 Game.prototype.moveAll = function() {

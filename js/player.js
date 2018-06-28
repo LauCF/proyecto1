@@ -1,18 +1,20 @@
 function Player(game) {
   this.game = game;
   this.img = new Image();
-  this.img.src = "img/Walk1.png";
+  this.img.src = "img/1_summer_Walk_000.png";
   this.img.frames = 1;
   this.img.frameIndex = 0;  
   
   this.x = this.game.canvas.width * 0.48;
-  this.y0 = this.game.canvas.height * 0.79;
+  this.y0 = this.game.canvas.height * 0.761111111;
   this.y = this.y0;
 
-  this.w = 50;
-  this.h = this.w * 2;
+  this.w = 80;
+  this.h = this.w * 1.58;
 
   this.vy = 1;
+  this.vx = 0;
+  this.maxSpeed = 4;
 
   this.setListeners();
 }
@@ -24,22 +26,26 @@ this.game.ctx.drawImage(this.img, this.x, this.y, this.w, this.h);
 Player.prototype.setListeners = function() {
   document.onkeydown = function(event) {
     if (event.keyCode === LEFT_KEY) {
-      if (this.x >= 0) {
-      this.x -= 15;
-      }
+     this.vx = -this.maxSpeed;
     } else if (event.keyCode === RIGHT_KEY) {
-      if (this.x + this.w <= this.game.canvas.width) {
-      this.x += 15;
-      }
+      this.vx = this.maxSpeed;
     } else if (event.keyCode === SPACE && this.y == this.y0) {
-      this.y -= 5;
+      this.y -= 15;
       this.vy -= 10;  
+    }
+  }.bind(this);
+
+  document.onkeyup = function(event) {
+    if (event.keyCode === LEFT_KEY) {
+     this.vx = 0;
+    } else if (event.keyCode === RIGHT_KEY) {
+      this.vx = 0;
     }
   }.bind(this);
 };
 
 Player.prototype.move = function() {
-  var gravity = 0.5;
+  var gravity = 0.2;
   if (this.y >= this.y0) {
     this.vy = 1;
     this.y = this.y0;
@@ -47,18 +53,15 @@ Player.prototype.move = function() {
     this.vy += gravity;
     this.y += this.vy;
   }
-};
 
-Player.prototype.move = function() {
-  var gravity = 0.4;
 
-  if (this.y >= this.y0) {
-    this.vy = 1;
-    this.y = this.y0;
-  } else {
-    this.vy += gravity;
-    this.y += this.vy;
+  if (this.x < 0) {
+    this.x = 0;
   }
+  if (this.x + this.w > this.game.canvas.width) {
+    this.x = this.game.canvas.width-this.w;
+  }
+  this.x += this.vx;
 };
 
 var LEFT_KEY = 37;
