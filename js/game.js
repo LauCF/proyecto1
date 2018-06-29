@@ -4,6 +4,8 @@ function Game(canvadId) {
   this.fps = 60;
 
   this.reset();
+  this.sound = new Audio();
+  this.sound.src = "sound/ouch.mp3";
 }
 
 Game.prototype.start = function() {
@@ -31,6 +33,7 @@ Game.prototype.start = function() {
 
     if (this.isCollision()) {
       this.lives--;
+      this.sound.play();
       }
       console.log(this.score)
       console.log(this.lives)
@@ -59,7 +62,7 @@ Game.prototype.reset = function() {
   this.obstacles = [];
   this.framesCounter = 0;
   this.score = 0;
-  this.lives = 3;
+  this.lives = 10;
 };
 
 Game.prototype.isCollision = function() {
@@ -96,13 +99,13 @@ Game.prototype.draw = function() {
   this.player.draw();
   this.obstacles.forEach(function(obstacle) { obstacle.draw(); });
 
-  this.ctx.font = "28px sans-serif";
-  this.ctx.fillStyle = "red ";
+  this.ctx.font = "25px 'Orbitron', sans-serif";
+  this.ctx.fillStyle = "#FE4164";
   this.ctx.fillText(("Score " + this.score), 50, 50);
 
-  this.ctx.font = "28px sans-serif";
+  this.ctx.font = "25px 'Orbitron', sans-serif";
   this.ctx.fillStyle = "yellow";
-  this.ctx.fillText(("Lives " + this.lives), 175, 50);
+  this.ctx.fillText(("Lives " + this.lives), 200, 50);
 };
 
 Game.prototype.moveAll = function() {

@@ -2,7 +2,7 @@ function Background(game) {
   this.game = game;
 
   this.img = new Image();
-  this.img.src = "img/platformer_background_3.png";
+  this.img.src = "img/background.png";
 
   this.x = 0;
   this.y = 0;

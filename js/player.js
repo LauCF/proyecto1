@@ -1,12 +1,23 @@
 function Player(game) {
   this.game = game;
+
   this.img = new Image();
-  this.img.src = "img/1_summer_Walk_000.png";
+  this.images = {
+    left: "img/player.png",
+    right: "img/playerderecha.png",
+  };
+  this.sprite = {};
   this.img.frames = 1;
   this.img.frameIndex = 0;  
-  
+  var that = this;
+  Object.keys(this.images).forEach(function(key) {
+    var image = new Image();
+    image.src = that.images[key];
+    that.sprite[key] = image;
+  });
+
   this.x = this.game.canvas.width * 0.48;
-  this.y0 = this.game.canvas.height * 0.761111111;
+  this.y0 = this.game.canvas.height * 0.78;
   this.y = this.y0;
 
   this.w = 80;
@@ -15,7 +26,7 @@ function Player(game) {
   this.vy = 1;
   this.vx = 0;
   this.maxSpeed = 4;
-
+  this.img = this.sprite.left;
   this.setListeners();
 }
 
@@ -27,8 +38,10 @@ Player.prototype.setListeners = function() {
   document.onkeydown = function(event) {
     if (event.keyCode === LEFT_KEY) {
      this.vx = -this.maxSpeed;
+     this.img = this.sprite.left;
     } else if (event.keyCode === RIGHT_KEY) {
       this.vx = this.maxSpeed;
+      this.img = this.sprite.right;
     } else if (event.keyCode === SPACE && this.y == this.y0) {
       this.y -= 15;
       this.vy -= 10;  
@@ -54,12 +67,11 @@ Player.prototype.move = function() {
     this.y += this.vy;
   }
 
-
   if (this.x < 0) {
     this.x = 0;
   }
   if (this.x + this.w > this.game.canvas.width) {
-    this.x = this.game.canvas.width-this.w;
+    this.x = this.game.canvas.width - this.w;
   }
   this.x += this.vx;
 };
