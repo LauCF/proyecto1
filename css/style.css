@@ -15,7 +15,7 @@ h1 {
   color: #FE4164;
   size: 30px;
   padding: 15px 30px;
-  border: 3px dashed #FE4164;
+  border: dotted 3px #FE4164;
   background: none;
   text-align: center;
   text-transform: uppercase;
@@ -25,7 +25,8 @@ h1 {
 }
 
 #canvas {
-  border: solid 1px black;
+  margin: 23px auto;
+  border: dotted 2px #FE4164;
   justify-content: center;
   display: none;
 }
